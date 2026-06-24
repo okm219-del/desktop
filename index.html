@@ -361,6 +361,7 @@
         <div class="weather-container">
             <h1 class="card-title">CLASSROOM BRIEFING</h1>
             <div class="weather-info">
+                <span id="weatherTime" style="font-size: 0.9rem; color: #495057; font-weight: normal; margin-right: 6px;">--시 기준</span>
                 <span id="weatherIcon">☀️</span> <span id="weatherTemp">인천 --°C</span>
                 <span id="dustInfo" class="dust-info">😷 미세먼지 확인중</span>
             </div>
@@ -490,6 +491,10 @@
                 const temp = Math.round(weatherData.current.temperature_2m);
                 const code = weatherData.current.weather_code;
                 
+                // API에서 반환한 현재 날씨 데이터 시각 파싱 (예: "2026-06-24T15:00")
+                const timeStr = weatherData.current.time; 
+                const hour = parseInt(timeStr.split('T')[1].split(':')[0]);
+                
                 let icon = '☀️';
                 if ([1, 2, 3].includes(code)) icon = '⛅';
                 else if ([45, 48].includes(code)) icon = '🌫️';
@@ -497,6 +502,7 @@
                 else if ([71, 73, 75, 85, 86].includes(code)) icon = '❄️';
                 else if ([95, 96, 99].includes(code)) icon = '⛈️';
                 
+                document.getElementById('weatherTime').innerText = `${hour}시 기준`;
                 document.getElementById('weatherIcon').innerText = icon;
                 document.getElementById('weatherTemp').innerText = `인천 ${temp}°C`;
 
@@ -516,6 +522,7 @@
 
             } catch (e) {
                 console.error(e);
+                document.getElementById('weatherTime').innerText = '--시 기준';
                 document.getElementById('weatherIcon').innerText = '⛅';
                 document.getElementById('weatherTemp').innerText = '인천 --°C';
                 document.getElementById('dustInfo').innerText = '😷 정보 없음';
